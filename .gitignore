@@ -1,4 +1,3 @@
-node_modules
-.c9revisions
 .idea/
-
+.idea/inspectionProfiles/
+.idea/vcs.xml
