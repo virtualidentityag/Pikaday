@@ -4,6 +4,7 @@ Pikaday
 ### A refreshing JavaScript Datepicker
 
 * Pikaday Version 1.3.2 with specific VI-Adaptions
+* This Repository was created with project specific changes. The changes are neither bug or feature, so a fork doesnt make sense. 
 * The files with Adaptions are: pikaday.js and plugins/pikaday.jquery.js
 * Lightweight (less than 5kb minified and gzipped)
 * No dependencies (but plays well with [Moment.js][moment])
