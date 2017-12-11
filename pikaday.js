@@ -4,10 +4,7 @@
  * Copyright © 2014 David Bushell | BSD & MIT license | https://github.com/dbushell/Pikaday
  * IFX customization: Virtual Identity AG, 2014
  * + vi changes are marked with: "vi adaption" and "vi adaption end", on lines:
- * 29-31, 154-156, 354-356, 371-373, 390-393, 395-397, 441-445, 447-451, 546-549,
- * 553-556, 931-934, 942-944, 987-996.
- * + Plugin specific adaptions from version 1.2.0 to version 1.3.2 on lines:
- * 118-126, 203-207, 513-522,635-640, 719-726
+ * 343-345, 360-362, 379-382, 384-386, 430-434, 436-440
  */
 
 (function (root, factory)
@@ -26,9 +23,7 @@
         {
             // Load moment.js as an optional dependency
             var id = 'moment';
-            // vi adaption
-            moment = req.defined && req.defined(id) ? req(id) : undefined;
-            // vi adaption end
+            try { moment = req(id); } catch (e) {}
             return factory(moment);
         });
     } else {
@@ -115,14 +110,11 @@
         return (/Date/).test(Object.prototype.toString.call(obj)) && !isNaN(obj.getTime());
     },
 
-
-    // pikaday adaption from version 1.2.0 to version 1.3.2
     isWeekend = function(date)
     {
         var day = date.getDay();
         return day === 0 || day === 6;
     },
-    // pikaday adaption end
 
     isLeapYear = function(year)
     {
@@ -151,9 +143,7 @@
         var prop, hasProp;
         for (prop in from) {
             hasProp = to[prop] !== undefined;
-                // vi adaption
-                if (hasProp && typeof from[prop] === 'object' && from[prop].nodeName === undefined) {
-                // vi adaption end
+                if (hasProp && typeof from[prop] === 'object' && from[prop] !== null && from[prop].nodeName === undefined) {
                 if (isDate(from[prop])) {
                     if (overwrite) {
                         to[prop] = new Date(from[prop].getTime());
@@ -200,10 +190,8 @@
         // ('bottom' & 'left' keywords are not used, 'top' & 'right' are modifier on the bottom/left position)
         position: 'bottom left',
 
-        // pikaday adaption from version 1.2.0 to version 1.3.2
         // automatically fit in the viewport even if it means repositioning from the position option
         reposition: true,
-        // pikaday adaption end
 
         // the default output format for `.toString()` and `field` value
         format: 'YYYY-MM-DD',
@@ -510,7 +498,6 @@
 
         self._onInputBlur = function()
         {
-            // pikaday adaption from version 1.2.0 to version 1.3.2
             // IE allows pika div to gain focus; catch blur the input field
             var pEl = document.activeElement;
             do {
@@ -519,7 +506,7 @@
                 }
             }
             while ((pEl = pEl.parentNode));
-            // pikaday adaption end
+
             if (!self._c) {
                 self._b = sto(function() {
                     self.hide();
@@ -543,17 +530,13 @@
                 }
             }
             do {
-                    // vi adaption
-                    if (hasClass(pEl, 'pika-single')) {
+                    if (hasClass(pEl, 'pika-single') || pEl === opts.trigger) {
                     return;
-                    // vi adaption end
                 }
             }
             while ((pEl = pEl.parentNode));
-                // vi adaption
-                if (self._v && target !== opts.trigger) {
+                if (self._v && target !== opts.trigger && pEl !== opts.trigger) {
                 self.hide();
-                // vi adaption end
             }
         };
 
@@ -632,11 +615,9 @@
 
             opts.trigger = (opts.trigger && opts.trigger.nodeName) ? opts.trigger : opts.field;
 
-            // pikaday adaption from version 1.2.0 to version 1.3.2
             opts.disableWeekends = !!opts.disableWeekends;
 
             opts.disableDayFn = (typeof opts.disableDayFn) == "function" ? opts.disableDayFn : null;
-            // pikaday adaption end
 
             var nom = parseInt(opts.numberOfMonths, 10) || 1;
             opts.numberOfMonths = nom > 4 ? 4 : nom;
@@ -717,12 +698,10 @@
             if (!date) {
                 this._d = null;
 
-                // pikaday adaption from version 1.2.0 to version 1.3.2
                 if (this._o.field) {
                     this._o.field.value = '';
                     fireEvent(this._o.field, 'change', { firedBy: this });
                 }
-                // pikaday adaption end
 
                 return this.draw();
             }
@@ -928,10 +907,8 @@
                 }
             }
 
-            // vi adaption
             // default position is bottom & left
-            if (left + width > viewportWidth ||
-            // vi adaption end
+            if ((this._o.reposition && left + width > viewportWidth) ||
                 (
                     this._o.position.indexOf('right') > -1 &&
                     left - width + field.offsetWidth > 0
@@ -939,9 +916,7 @@
             ) {
                 left = left - width + field.offsetWidth;
             }
-            // vi adaption
-            if (top + height > viewportHeight + scrollTop ||
-            // vi adaption end
+            if ((this._o.reposition && top + height > viewportHeight + scrollTop) ||
                 (
                     this._o.position.indexOf('top') > -1 &&
                     top - height - field.offsetHeight > 0
@@ -984,8 +959,6 @@
             for (var i = 0, r = 0; i < cells; i++)
             {
                 var day = new Date(year, month, 1 + (i - before)),
-                    // vi adaption
-                    isDisabled = (opts.minDate && day < opts.minDate) || (opts.maxDate && day > opts.maxDate),
                     isSelected = isDate(this._d) ? compareDates(day, this._d) : false,
                     isToday = compareDates(day, now),
                     isEmpty = i < before || i >= (days + before),
@@ -993,7 +966,6 @@
                                  (opts.maxDate && day > opts.maxDate) ||
                                  (opts.disableWeekends && isWeekend(day)) ||
                                  (opts.disableDayFn && opts.disableDayFn(day));
-                    // vi adaption end
 
                 row.push(renderDay(1 + (i - before), month, year, isSelected, isToday, isDisabled, isEmpty));
 
