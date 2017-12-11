@@ -5,7 +5,7 @@ Pikaday
 
 * Pikaday Version 1.3.2 with specific VI-Adaptions
 * This Repository was created with project specific changes. The changes are neither bug or feature, so a fork doesnt make sense.
-* If you want to add the Plugin in a project, please use the original on: https://github.com/dbushell/Pikaday
+* If you want to add the Plugin to a project, please use the original on: https://github.com/dbushell/Pikaday
 * The files with Adaptions are: pikaday.js and plugins/pikaday.jquery.js
 * Lightweight (less than 5kb minified and gzipped)
 * No dependencies (but plays well with [Moment.js][moment])
